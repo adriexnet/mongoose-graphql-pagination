@@ -108,6 +108,24 @@ class Pagination {
     return this.promises.cursor;
   }
 
+ /**
+   * Gets the start cursor value of the current limit and sort.
+   * In this case, the cursor will be the document id, non-obfuscated.
+   *
+   * @return {Promise}
+   */
+  getStartCursor() {
+    const run = async () => {
+      const edges = await this.getEdges();
+      if (!edges.length) return null;
+      return edges[0].cursor;
+    };
+    if (!this.promises.cursor) {
+      this.promises.startCursor = run();
+    }
+    return this.promises.startCursor;
+  }
+
   /**
    * Determines if another page is available.
    *
